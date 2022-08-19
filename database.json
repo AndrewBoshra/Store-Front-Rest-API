@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "driver": "pg",
+        "user": "application",
+        "password": "0000",
+        "database":"store_front_dev"
+    },
+    "test": {
+        "driver": "pg",
+        "user": "test",
+        "password": "0000",
+        "database":"store_front_test"
+    },
+    "sql-file" : true
+}
