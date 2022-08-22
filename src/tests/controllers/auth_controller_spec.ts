@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../../index";
-fdescribe("auth controller tests", () => {
-    describe("/login", () => {
+describe("auth controller tests", () => {
+    describe("/login[POST]", () => {
         beforeAll(async () => {
             await request(app).post("/auth/signup").send({
                 first_name: "test",

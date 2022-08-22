@@ -1,11 +1,11 @@
 import express from "express";
-import { productsController } from "../container";
+import { authController, productsController } from "../container";
 
 const productsRouter = express.Router();
 
 productsRouter
     .get("/", productsController.index)
-    .post("/", productsController.create)
+    .post("/", authController.authorize, productsController.create)
     .get("/popular", productsController.topProducts)
     .get("/category/:category", productsController.categoryProducts)
     .get("/:id", productsController.show);

@@ -1,6 +1,7 @@
 import OrderViewModel from "../models/view_models/order_view_model";
 import { Pool } from "pg";
 import { OrderStatus, Product } from "../models";
+import { openConnectionAndQuery } from "../models/shared/database";
 
 export class OrderService {
     constructor(public pool: Pool) {}
@@ -40,13 +41,11 @@ export class OrderService {
                            orders.user_id=$1 AND
                            orders.status=$2;
                     `;
-        const client = await this.pool.connect();
-        const response = await client.query(sql, [
+        const dbRes = await openConnectionAndQuery(this.pool, sql, [
             userId,
             OrderStatus.Completed,
         ]);
-        await client.release();
-        return this.deserializeOrders(response.rows);
+        return this.deserializeOrders(dbRes.rows);
     }
 
     async getOrdersCreatedByUser(userId: number): Promise<OrderViewModel[]> {
@@ -55,9 +54,7 @@ export class OrderService {
                      WHERE orders.id=order_products.order_id AND 
                      products.id=order_products.product_id AND
                            orders.user_id=$1;`;
-        const client = await this.pool.connect();
-        const response = await client.query(sql, [userId]);
-        await client.release();
+        const response = await openConnectionAndQuery(this.pool, sql, [userId]);
         return this.deserializeOrders(response.rows);
     }
 }

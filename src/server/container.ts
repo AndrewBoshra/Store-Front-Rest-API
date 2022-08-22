@@ -13,6 +13,8 @@ import {
 } from "../services";
 import pool from "./database";
 import config from "../config";
+import { CartService } from "../services/cart_service";
+import { CartController } from "./controllers/cart_controller";
 // all Dependency Injection goes here
 const usersRepository = new UsersRepository(pool);
 const productsRepository = new ProductsRepository(pool);
@@ -25,11 +27,13 @@ const authenticationService = new AuthenticationService(
 
 const orderService = new OrderService(pool);
 const usersService = new UsersService(usersRepository);
+const cartService = new CartService(pool);
 //************ Controllers  **************
 const authController = new AuthController(authenticationService, jwtService);
 const productsController = new ProductsController(productsRepository);
 const ordersController = new OrdersController(orderService);
 const usersController = new UsersController(usersService);
+const cartController = new CartController(cartService);
 
 export {
     usersRepository,
@@ -39,8 +43,10 @@ export {
     authenticationService,
     orderService,
     usersService,
+    cartService,
     authController,
     productsController,
     ordersController,
     usersController,
+    cartController,
 };

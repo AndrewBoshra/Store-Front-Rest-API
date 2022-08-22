@@ -1,5 +1,6 @@
 import express from "express";
 import authRouter from "./auth_router";
+import cartRouter from "./cart_router";
 import ordersRouter from "./orders_router";
 import productsRouter from "./products_router";
 import usersRouter from "./users_router";
@@ -10,5 +11,6 @@ router.use("/auth", authRouter);
 router.use("/orders", ordersRouter);
 router.use("/products", productsRouter);
 router.use("/users", usersRouter);
+router.use("/cart", cartRouter);
 
 export default router;
