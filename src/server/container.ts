@@ -27,7 +27,7 @@ const authenticationService = new AuthenticationService(
 
 const orderService = new OrderService(pool);
 const usersService = new UsersService(usersRepository);
-const cartService = new CartService(pool);
+const cartService = new CartService(pool, orderService);
 //************ Controllers  **************
 const authController = new AuthController(authenticationService, jwtService);
 const productsController = new ProductsController(productsRepository);

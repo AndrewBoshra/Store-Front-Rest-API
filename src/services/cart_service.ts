@@ -5,10 +5,14 @@ import {
     Product,
     ProductInCartViewModel,
 } from "../models/";
-import { openConnectionAndQuery } from "../models/shared/database";
+import { openConnectionAndQuery } from "../shared/database";
+import { OrderService } from "./order_service";
 
 export class CartService {
-    constructor(public pool: Pool) {}
+    constructor(
+        public pool: Pool,
+        private readonly _orderService: OrderService
+    ) {}
     //TODO add type for this
     private deserializeProductInCart(r: any) {
         const product = new Product({ ...r, id: r.product_id });
@@ -72,11 +76,21 @@ export class CartService {
             return 0;
         }
     }
-    async order(
-        userId: number,
-        productId: number,
-        quantity: number
-    ): Promise<Order> {
-        throw new Error("Unimplemented");
+    async order(userId: number) {
+        const sql = `SELECT product_id,quantity 
+                     FROM cart_products
+                     WHERE owner_id=$1;`;
+        const dbRes = await openConnectionAndQuery(this.pool, sql, [userId]);
+        const products = dbRes.rows.map((r) => {
+            return {
+                productId: r.product_id,
+                quantity: r.quantity,
+            };
+        });
+
+        return this._orderService.createNewOrder({
+            userId,
+            products,
+        });
     }
 }

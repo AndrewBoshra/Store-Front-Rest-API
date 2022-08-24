@@ -8,5 +8,6 @@ cartRouter
     .get("/", cartController.index)
     .delete("/:productid", cartController.delete)
     .patch("/:productid", cartController.update)
-    .post("/", cartController.add);
+    .post("/", cartController.add)
+    .post("/order", cartController.order);
 export default cartRouter;

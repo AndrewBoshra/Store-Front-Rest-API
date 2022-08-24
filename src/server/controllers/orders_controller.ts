@@ -6,7 +6,7 @@ export class OrdersController {
     constructor(private readonly _ordersService: OrderService) {}
     index: RequestHandler = async (req, res) => {
         const userId = req.user!.id;
-        const orders = await this._ordersService.getCompletedOrdersByUser(
+        const orders = await this._ordersService.getOrdersCreatedByUser(
             userId!
         );
         new AppResponse(res, 200, orders).send();

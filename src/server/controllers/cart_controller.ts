@@ -71,4 +71,9 @@ export class CartController {
 
         new AppResponse(res, 200, `added a product to cart `).send();
     };
+    order: RequestHandler = async (req, res) => {
+        const userId = req.user!.id!;
+        const orderId = await this._cartService.order(userId);
+        return new AppResponse(res, 201, { orderId }).send();
+    };
 }

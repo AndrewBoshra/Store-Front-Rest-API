@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 import { User } from "../models/index";
-import { openConnectionAndQuery } from "../models/shared/database";
+import { openConnectionAndQuery } from "../shared/database";
 
 export class UsersRepository {
     constructor(private readonly pool: Pool) {}
