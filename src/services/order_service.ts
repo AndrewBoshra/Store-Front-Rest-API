@@ -1,7 +1,7 @@
 import OrderViewModel from "../models/view_models/order_view_model";
 import { Pool, PoolClient } from "pg";
 import { OrderStatus, Product } from "../models";
-import { openConnectionAndQuery, transaction } from "../shared/database";
+import { openConnectionAndQuery, transaction } from "../server/database";
 interface OrderDetails {
     userId: number;
     products: { productId: number; quantity: number }[];
@@ -36,6 +36,18 @@ export class OrderService {
         }
         return Object.values(createdOrders);
     }
+    async completeOrder(userId: number, orderId: number): Promise<number> {
+        const sql = `UPDATE orders
+                     SET status=$1 , completed_at=$2
+                     WHERE user_id=$3 AND id=$4 AND status=${OrderStatus.Active};`;
+        const dbRes = await openConnectionAndQuery(this.pool, sql, [
+            OrderStatus.Completed,
+            new Date(),
+            userId,
+            orderId,
+        ]);
+        return dbRes.rowCount;
+    }
     async getCompletedOrdersByUser(userId: number): Promise<OrderViewModel[]> {
         const sql = `SELECT *
                      FROM orders , order_products, products
@@ -64,11 +76,14 @@ export class OrderService {
         client: PoolClient,
         orderDetails: OrderDetails
     ): Promise<number> {
+        //insert a new order
         const insertOrderSQL = `INSERT INTO orders(user_id,status) VALUES($1,${OrderStatus.Active}) RETURNING id;`;
         const insertOrderRes = await client.query(insertOrderSQL, [
             orderDetails.userId,
         ]);
         const order_id = insertOrderRes.rows[0].id as number;
+
+        //insert products to that order
         let insertProductsSql = `INSERT INTO order_products(order_id,product_id,quantity) VALUES`;
         const insertProductsArgs: unknown[] = [];
         let argNum = 1;

@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../../index";
-describe("products_controller", () => {
+describe("/products endpointss", () => {
     const route = (r = "") => `/products/${r}`;
     const server = request(app);
 
@@ -14,20 +14,10 @@ describe("products_controller", () => {
     //     });
     //     token = res.body.token;
     // });
-    fdescribe("/[POST]", () => {
+    describe("/[POST]", () => {
         it("should require auth token", async () => {
             const res = await server.post(route()).send({});
             expect(res.statusCode).toBe(401);
-        });
-
-        it("should create product", async () => {
-            const res = await server.post(route()).send({
-                name: "test create product",
-                description: "test create product",
-                price: 150,
-                category: "test",
-            });
-            expect(res.statusCode).toBe(201);
         });
     });
 

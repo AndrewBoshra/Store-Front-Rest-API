@@ -1,11 +1,14 @@
-import { AuthenticationError, RequiredFieldError } from "../../errors/error";
+import {
+    AuthenticationError,
+    RequiredFieldError,
+} from "../../shared/errors/error";
 import { User } from "../../models";
 import { AuthenticationService, PasswordHashingService } from "../../services";
-import customMatchers from "../helpers/matcher";
+import customAsyncMatchers from "../helpers/matcher";
 
-describe("authServices tests", () => {
-    beforeEach(() => {
-        jasmine.addAsyncMatchers(customMatchers);
+describe("authServices", () => {
+    beforeAll(() => {
+        jasmine.addAsyncMatchers(customAsyncMatchers);
     });
     describe("PasswordHashingService", () => {
         const passwordHash = new PasswordHashingService();
@@ -52,7 +55,7 @@ describe("authServices tests", () => {
             userRepoSpy,
             passwordHashingSpy
         );
-        describe("login test", () => {
+        describe("login", () => {
             it("should throw an error in case of missing email", async () => {
                 await expectAsync(
                     authService.login({ password: "andrew@gmail.com" })
@@ -130,7 +133,7 @@ describe("authServices tests", () => {
                 ).toBeResolvedTo(user);
             });
         });
-        describe("signup tests", () => {
+        describe("signup ", () => {
             it("should throw an error in case of missing data", async () => {
                 await expectAsync(
                     authService.signup({
@@ -166,8 +169,8 @@ describe("authServices tests", () => {
                 });
                 userRepoSpy.getUserByEmail.and.returnValue(user);
                 await expectAsync(
-                    authService.signup({ ...user, password: "password" })
-                ).toThrowErrorOfType(AuthenticationError, /exists/);
+                    authService.signup({ ...user, password: "123456" })
+                ).toThrowErrorOfType(AuthenticationError, /exist/);
             });
 
             it("should call the hashing function and assign the passwordHash value", async () => {

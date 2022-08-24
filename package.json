@@ -20,7 +20,8 @@
     "jasmine-spec-reporter": "^7.0.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
-    "supertest": "^6.2.4"
+    "supertest": "^6.2.4",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -29,6 +30,7 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/pg": "^8.6.5",
     "@types/supertest": "^2.0.12",
+    "@types/validator": "^13.7.5",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
     "db-migrate-pg": "^1.2.2",

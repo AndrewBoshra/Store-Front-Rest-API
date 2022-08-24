@@ -6,7 +6,7 @@ import {
     AppError,
     AuthenticationError,
     AuthorizationError,
-} from "../errors/error";
+} from "../shared/errors/error";
 import router from "./routers";
 export default class Application {
     expressApp!: express.Application;

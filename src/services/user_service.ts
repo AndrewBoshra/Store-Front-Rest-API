@@ -1,6 +1,6 @@
 import { UsersRepository } from "../repositories";
 import { UserViewModel } from "../models/view_models/user_view_model";
-import { RequiredFieldError, ValidationError } from "../errors/error";
+import { idValidator } from "../shared/app_validators";
 
 export class UsersService {
     constructor(private readonly _usersRepository: UsersRepository) {}
@@ -9,10 +9,8 @@ export class UsersService {
             await this._usersRepository.getAll()
         ).map((u) => new UserViewModel(u));
     }
-    async get(id?: string): Promise<UserViewModel | undefined> {
-        if (id == undefined) throw new RequiredFieldError("id");
-        const idNum = parseInt(id);
-        if (isNaN(idNum)) throw new ValidationError("id", "is not a number");
+    async get(id?: string | number): Promise<UserViewModel | undefined> {
+        const idNum = idValidator(id, "id");
         const user = await this._usersRepository.get(idNum);
         if (user == undefined) return undefined;
         return new UserViewModel(user);

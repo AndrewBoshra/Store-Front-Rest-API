@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 import { Product } from "../models/index";
-import { openConnectionAndQuery } from "../shared/database";
+import { openConnectionAndQuery } from "../server/database";
 
 export default class ProductsRepository {
     constructor(public pool: Pool) {}

@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { AuthenticationError, RequiredFieldError } from "../errors/error";
+import { AuthenticationError } from "../shared/errors/error";
 import { User } from "../models";
 import bcrypt from "bcrypt";
 import { UsersRepository } from "../repositories";
 import jwt from "jsonwebtoken";
+import {
+    compose,
+    requiredEmailValidator,
+    requiredFieldValidator,
+    strongPasswordValidator,
+} from "../shared/app_validators";
 export class PasswordHashingService {
     async verify(hashed: string, password: string): Promise<boolean> {
         return bcrypt.compare(password, hashed);
@@ -14,6 +20,18 @@ export class PasswordHashingService {
     }
 }
 
+const passwordValidator = compose<string>(
+    "password",
+    requiredFieldValidator,
+    (v, fn) =>
+        strongPasswordValidator(v, fn, {
+            minLength: 6,
+            minLowercase: 0,
+            minNumbers: 0,
+            minSymbols: 0,
+            minUppercase: 0,
+        })
+);
 export class AuthenticationService {
     constructor(
         private readonly _userRepository: UsersRepository,
@@ -23,12 +41,8 @@ export class AuthenticationService {
         email?: string;
         password?: string;
     }): Promise<User> {
-        if (loginData.password == undefined) {
-            throw new RequiredFieldError("password");
-        }
-        if (loginData.email == undefined) {
-            throw new RequiredFieldError("email");
-        }
+        requiredEmailValidator(loginData.email, "email");
+        requiredFieldValidator(loginData.password, "password");
 
         const user = await this._userRepository.getUserByEmail(
             loginData.email!
@@ -52,16 +66,12 @@ export class AuthenticationService {
         password?: string;
     }): Promise<User> {
         const newUser = new User(userData);
-        if (userData.password == undefined) {
-            throw new RequiredFieldError("password");
-        }
+        const password = passwordValidator(userData.password);
         const user = await this._userRepository.getUserByEmail(newUser.email);
         if (user != undefined) {
             throw new AuthenticationError("email already exists!");
         }
-        newUser.password_hash = await this._hashingService.hash(
-            userData.password
-        );
+        newUser.password_hash = await this._hashingService.hash(password);
         return this._userRepository.add(newUser);
     }
 }

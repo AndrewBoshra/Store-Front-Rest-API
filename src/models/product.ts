@@ -1,4 +1,22 @@
-import { RequiredFieldError, ValidationError } from "../errors/error";
+import {
+    compose,
+    notEmpty,
+    numberValidator,
+    priceValidator,
+    requiredFieldValidator,
+} from "../shared/app_validators";
+const nameValidator = compose<string>("name", requiredFieldValidator, notEmpty);
+const categoryValidator = compose<string>(
+    "category",
+    requiredFieldValidator,
+    notEmpty
+);
+const productPriceValidator = compose<number>(
+    "price",
+    requiredFieldValidator,
+    numberValidator,
+    priceValidator
+);
 
 export class Product {
     id?: number;
@@ -12,22 +30,9 @@ export class Product {
         price?: number;
         category?: string;
     }) {
-        if (product.name == undefined) throw new RequiredFieldError("name");
-
-        if (product.name.trim().length == 0)
-            throw new ValidationError("name", "name can not be empty!");
-
-        if (product.price == undefined) throw new RequiredFieldError("price");
-
-        if (isNaN(product.price) || product.price < 0)
-            throw new ValidationError("price", "is invalid");
-
-        if (product.category == undefined)
-            throw new RequiredFieldError("category");
-
         this.id = product.id;
-        this.name = product.name;
-        this.price = product.price;
-        this.category = product.category;
+        this.name = nameValidator(product.name);
+        this.price = productPriceValidator(product.price);
+        this.category = categoryValidator(product.category);
     }
 }

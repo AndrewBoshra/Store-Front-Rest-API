@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 import { User } from "../models/index";
-import { openConnectionAndQuery } from "../shared/database";
+import { openConnectionAndQuery } from "../server/database";
 
 export class UsersRepository {
     constructor(private readonly pool: Pool) {}
@@ -18,15 +18,22 @@ export class UsersRepository {
         user.id = data.id;
         return user;
     }
-    async get(id: number): Promise<User | undefined> {
-        throw new Error("Method not implemented.");
-    }
     async getAll(): Promise<User[]> {
         const sql = `SELECT * 
                     FROM users;`;
         const dbRes = await openConnectionAndQuery(this.pool, sql);
         const rows = dbRes.rows;
         return rows.map((r) => new User(r));
+    }
+    async get(id: number): Promise<User | undefined> {
+        const sql = `SELECT * 
+                     FROM users
+                     WHERE id=$1;`;
+
+        const dbRes = await openConnectionAndQuery(this.pool, sql, [id]);
+        if (dbRes.rows.length === 0) return undefined;
+        const rows = dbRes.rows;
+        return new User(rows[0]);
     }
     async getUserByEmail(email: string): Promise<User | undefined> {
         const sql = `SELECT * 

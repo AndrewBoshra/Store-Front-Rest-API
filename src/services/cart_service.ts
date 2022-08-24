@@ -1,11 +1,6 @@
 import { Pool } from "pg";
-import {
-    CartViewModel,
-    Order,
-    Product,
-    ProductInCartViewModel,
-} from "../models/";
-import { openConnectionAndQuery } from "../shared/database";
+import { CartViewModel, Product, ProductInCartViewModel } from "../models/";
+import { openConnectionAndQuery } from "../server/database";
 import { OrderService } from "./order_service";
 
 export class CartService {
@@ -13,7 +8,7 @@ export class CartService {
         public pool: Pool,
         private readonly _orderService: OrderService
     ) {}
-    //TODO add type for this
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private deserializeProductInCart(r: any) {
         const product = new Product({ ...r, id: r.product_id });
         return new ProductInCartViewModel(product, r.quantity);
@@ -61,7 +56,6 @@ export class CartService {
         productId: number,
         quantity: number
     ): Promise<number> {
-        //TODO CHECK FOR VALID INPUT (EXISTS)
         const sql = `INSERT INTO cart_products(owner_id,product_id,quantity)
                     VALUES($1,$2,$3)
                     RETURNING *;`;
@@ -87,7 +81,9 @@ export class CartService {
                 quantity: r.quantity,
             };
         });
-
+        const emptyCartSql = `DELETE FROM cart_products
+                              WHERE owner_id=$1;`;
+        await openConnectionAndQuery(this.pool, emptyCartSql, [userId]);
         return this._orderService.createNewOrder({
             userId,
             products,

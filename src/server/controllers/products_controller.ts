@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import { Product } from "../../models";
 import ProductsRepository from "../../repositories/products_repo";
 import { AppResponse } from "./response";
 
@@ -21,7 +22,9 @@ export class ProductsController {
         return new AppResponse(res, 200, product).send();
     };
     create: RequestHandler = async (req, res) => {
-        const product = await this._productsRepository.add(req.body);
+        const product = await this._productsRepository.add(
+            new Product(req.body)
+        );
         new AppResponse(res, 201, product).send();
     };
     topProducts: RequestHandler = async (req, res) => {

@@ -2,7 +2,7 @@ import { AuthenticationService, JWTService } from "../../services";
 import { RequestHandler } from "express";
 import { AppResponse } from "./response";
 import { UserViewModel } from "../../models/view_models/user_view_model";
-import { AuthorizationError } from "../../errors/error";
+import { AuthorizationError } from "../../shared/errors/error";
 
 export class AuthController {
     constructor(

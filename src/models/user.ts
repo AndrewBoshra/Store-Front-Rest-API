@@ -1,4 +1,7 @@
-import { RequiredFieldError } from "../errors/error";
+import {
+    requiredEmailValidator,
+    requiredFieldValidator,
+} from "../shared/app_validators";
 
 export class User {
     id?: number;
@@ -14,19 +17,10 @@ export class User {
         password_hash?: string;
         id?: number;
     }) {
-        if (user.first_name == undefined) {
-            throw new RequiredFieldError("first_name");
-        }
-        if (user.last_name == undefined) {
-            throw new RequiredFieldError("last_name");
-        }
-        if (user.email == undefined) {
-            throw new RequiredFieldError("email");
-        }
-        this.first_name = user.first_name;
-        this.last_name = user.last_name;
+        this.first_name = requiredFieldValidator(user.first_name, "first_name");
+        this.last_name = requiredFieldValidator(user.last_name, "last_name");
+        this.email = requiredEmailValidator(user.email, "email");
         this.password_hash = user.password_hash;
-        this.email = user.email;
         this.id = user.id;
     }
 }

@@ -1,5 +1,4 @@
 import Application from "./server/server";
-
 const app = new Application();
 app.bootstrap();
 export default app.expressApp; //for testing
