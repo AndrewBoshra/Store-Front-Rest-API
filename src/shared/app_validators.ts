@@ -87,6 +87,13 @@ export function requiredEmailValidator(
     )(e);
 }
 
+export function nonEmptyString(
+    e: string | undefined,
+    fieldName: string
+): string {
+    return compose<string>(fieldName, requiredFieldValidator, notEmpty)(e);
+}
+
 export function compose<T>(
     fieldName: string,
     ...validators: ((v: any, fieldName: string) => T)[]

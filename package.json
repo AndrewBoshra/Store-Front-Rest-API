@@ -4,16 +4,17 @@
   "description": "",
   "scripts": {
     "start": "npx nodemon src/index.ts",
-    "test": "set PG_DB_NAME=store_front_test&& set PG_DB_User=test && db-migrate reset --env test && db-migrate --env test up && npx ts-node node_modules/jasmine/bin/jasmine ",
+    "test": "set NODE_ENV=test&& db-migrate reset --env test && db-migrate --env test up && npx ts-node node_modules/jasmine/bin/jasmine ",
     "test:watch": "npx nodemon --ext ts --exec \"npm test\"",
     "test:build": "set NODE_ENV=test && npm run build && npx jasmine",
     "build": "npx tsc",
-    "start:prod": "node build/index"
+    "start:prod": "npm run build && node build/index"
   },
   "author": "Udacity",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "db-migrate": "^0.11.13",
     "dotenv": "^16.0.1",
     "express": "^5.0.0-beta.1",
     "jasmine": "^4.3.0",

@@ -12,7 +12,7 @@ export class UsersController {
         const userId = req.params.id;
         const user = await this._userService.get(userId);
         if (user == undefined)
-            return new AppResponse(res, 404, "user was not found");
+            return new AppResponse(res, 404, "user was not found").send();
         new AppResponse(res, 200, user).send();
     };
 }

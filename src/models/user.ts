@@ -1,6 +1,6 @@
 import {
+    nonEmptyString,
     requiredEmailValidator,
-    requiredFieldValidator,
 } from "../shared/app_validators";
 
 export class User {
@@ -17,8 +17,8 @@ export class User {
         password_hash?: string;
         id?: number;
     }) {
-        this.first_name = requiredFieldValidator(user.first_name, "first_name");
-        this.last_name = requiredFieldValidator(user.last_name, "last_name");
+        this.first_name = nonEmptyString(user.first_name, "first_name");
+        this.last_name = nonEmptyString(user.last_name, "last_name");
         this.email = requiredEmailValidator(user.email, "email");
         this.password_hash = user.password_hash;
         this.id = user.id;

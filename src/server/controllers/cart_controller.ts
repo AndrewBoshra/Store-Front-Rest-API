@@ -31,7 +31,10 @@ export class CartController {
             productId,
             quantity
         );
-        new AppResponse(res, 200, `updated ${updatedCout} in cart `).send();
+        if (updatedCout == 0)
+            return new AppResponse(res, 404, ` product is not in cart`).send();
+
+        new AppResponse(res, 200, `updated`).send();
     };
     add: RequestHandler = async (req, res) => {
         const userId = req.user?.id;
@@ -43,14 +46,20 @@ export class CartController {
             productId,
             quantity
         );
-        if (addedCount == 0)
-            new AppResponse(res, 404, `product was not found `).send();
+        if (addedCount === 0)
+            return new AppResponse(
+                res,
+                400,
+                ` product already in cart or product was not found`
+            ).send();
 
         new AppResponse(res, 200, `added a product to cart`).send();
     };
     order: RequestHandler = async (req, res) => {
         const userId = req.user!.id!;
         const orderId = await this._cartService.order(userId);
+        if (orderId === undefined)
+            return new AppResponse(res, 400, null, "cart is empty").send();
         return new AppResponse(res, 201, { orderId }).send();
     };
 }

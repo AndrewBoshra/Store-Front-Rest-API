@@ -13,19 +13,20 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [OPTIONAL] Products by category (args: product category) /products/category/:category
 
 #### Users
-- Index [token required] --> /users[GET]
-- Show (args: id)[token required] --> /users/:id [GET]
-- Create (args: User) --> Check Auth
+- Index [token required] --> /users[GET] // will hide password
+- Show (args: id)[token required] --> /users/:id [GET] // will hide password
+- Create (args: User) --> signup Check Auth Section below
 
 #### Auth
-- login --> /auth/login [POST] body{email , password}
-- signup --> /auth/signup [POST] body{first_name, last_name, email, password} // creates a new user
+- login --> /auth/login [POST] body{email , password} 
+- signup --> /auth/signup [POST] body{first_name, last_name, email, password} // creates a new user // email is unique password is more than 6 chars
+
 
 #### Cart
 - Index  [token required] /cart            [GET]    --> returns list of products in cart
 - Delete [token required] /cart/:productId [DELETE] --> removes product from cart
-- Update [token required] /cart/:productId [PATCH]  --> update product quantity
-- Add    [token required] /cart            [POST]   --> add product to cart  
+- Update [token required] /cart/:productId [PATCH]  --> update product quantity ---> body{quantity}
+- Add    [token required] /cart            [POST]   --> add product to cart  ---> body{quantity,productid}
 - Order  [token required] /cart/order      [POST]   --> create order from cart 
 
 #### Orders 
