@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "start": "npx nodemon src/index.ts",
+    "start": " db-migrate up --env dev&& npx nodemon src/index.ts",
     "test": "npm run build && set NODE_ENV=test&& db-migrate reset --env test && db-migrate --env test up && npx ts-node node_modules/jasmine/bin/jasmine ",
     "test:watch": "npx nodemon --ext ts --exec \"npm test\"",
     "test:build": "set NODE_ENV=test && npm run build && npx jasmine",
     "build": "npx tsc",
-    "start:prod": "npm run build && node build/index"
+    "start:prod": "db-migrate up --env dev&&npm run build && node build/index"
   },
   "author": "Udacity",
   "license": "ISC",
