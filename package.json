@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "npx nodemon src/index.ts",
-    "test": "set NODE_ENV=test&& db-migrate reset --env test && db-migrate --env test up && npx ts-node node_modules/jasmine/bin/jasmine ",
+    "test": "npm run build && set NODE_ENV=test&& db-migrate reset --env test && db-migrate --env test up && npx ts-node node_modules/jasmine/bin/jasmine ",
     "test:watch": "npx nodemon --ext ts --exec \"npm test\"",
     "test:build": "set NODE_ENV=test && npm run build && npx jasmine",
     "build": "npx tsc",
@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "db-migrate": "^0.11.13",
     "dotenv": "^16.0.1",
     "express": "^5.0.0-beta.1",
     "jasmine": "^4.3.0",
@@ -34,6 +33,7 @@
     "@types/validator": "^13.7.5",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
+    "db-migrate": "^0.11.13",
     "db-migrate-pg": "^1.2.2",
     "eslint": "^8.22.0",
     "eslint-config-prettier": "^8.5.0",
