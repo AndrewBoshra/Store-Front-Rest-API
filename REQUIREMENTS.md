@@ -8,9 +8,9 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Products
 - Index --> /products [GET]
 - Show (args: product id) --> /products/:id [GET]
-- Create (args: Product)[token required] -->  /products [POST]
+- Create (args: Product)[token required] -->  /products [POST] body{price:number, name:string, category:string}
 - [OPTIONAL] Top 5 most popular products -->  /products/popular?limit=5 [GET]  default limit is 5
-- [OPTIONAL] Products by category (args: product category) /products/category/:category
+- [OPTIONAL] Products by category (args: product category) /products/category/:category [GET]
 
 #### Users
 - Index [token required] --> /users[GET] // will hide password
@@ -27,11 +27,11 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Delete [token required] /cart/:productId [DELETE] --> removes product from cart
 - Update [token required] /cart/:productId [PATCH]  --> update product quantity ---> body{quantity}
 - Add    [token required] /cart            [POST]   --> add product to cart  ---> body{quantity,productid}
-- Order  [token required] /cart/order      [POST]   --> create order from cart 
+- Order  [token required] /cart/order      [POST]   --> create order from cart ---> body{}
 
 #### Orders 
 - Orders by user [token required] /orders [Get] 
-- Complete an Order [token required] /orders/:orderid/complete [POST] // this may be not right however we don't have admins so i added it to test changing order state  
+- Complete an Order [token required] /orders/:orderid/complete [POST] // this may be not right however we don't have admins so i added it to test changing order state
 - [OPTIONAL] Completed Orders by user [token required] /orders/completed [Get] 
 
 ## Schema
