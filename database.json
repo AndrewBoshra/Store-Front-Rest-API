@@ -1,15 +1,17 @@
 {
     "dev": {
         "driver": "pg",
-        "user": "application",
-        "password": "0000",
-        "database":"store_front_dev"
+        "user": {"ENV":"PG_USER"},
+        "password": {"ENV":"PG_PASSWORD"},
+        "database":{"ENV":"PG_DB_NAME"},
+        "host":{"ENV":"PG_HOST"}
     },
     "test": {
         "driver": "pg",
-        "user": "test",
-        "password": "0000",
-        "database":"store_front_test"
+        "user": {"ENV":"TEST_PG_USER"},
+        "password": {"ENV":"TEST_PG_PASSWORD"},
+        "database":{"ENV":"TEST_PG_DB_NAME"},
+        "host":{"ENV":"TEST_PG_HOST"}
     },
     "sql-file" : true
 }

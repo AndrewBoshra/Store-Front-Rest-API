@@ -4,23 +4,41 @@
 1. install db-migrate globally `npm i -g db-migrate`
 1. you need to create 2 databases(you can change the names just make sure to update database.json and .env files)
     1. **store_front_dev** this we be used in the application to store the data  
+    ```sh
+        CREATE DATABASE store_front_dev;
+    ```
     1. **store_front_test** this we be used in tests
+    ```sh
+        CREATE DATABASE store_front_test;
+    ```
+
+1. create postgres users through shell 
+    ```sh
+        CREATE USER application WITH PASSWORD '0000'; 
+        CREATE USER test WITH PASSWORD '0000';
+        GRANT ALL PRIVILEGES ON DATABASE store_front_dev TO application; 
+        GRANT ALL PRIVILEGES ON DATABASE store_front_test TO test; 
+    ```
 1. put the databases data in the database.json
    similar to this:
     ```json
-        "dev": {
-            "driver": "pg",
-            "user": "application", // username
-            "password": "0000",    // password
-            "database":"store_front_dev"
-        },
-        "test": {
-            "driver": "pg",
-            "user": "test",    // username
-            "password": "0000",// password
-            "database":"store_front_test"
-        },
-        "sql-file" : true
+        {
+            "dev": {
+                "driver": "pg",
+                "user": {"ENV":"PG_USER"},
+                "password": {"ENV":"PG_PASSWORD"},
+                "database":{"ENV":"PG_DB_NAME"},
+                "host":{"ENV":"PG_HOST"}
+            },
+            "test": {
+                "driver": "pg",
+                "user": {"ENV":"TEST_PG_USER"},
+                "password": {"ENV":"TEST_PG_PASSWORD"},
+                "database":{"ENV":"TEST_PG_DB_NAME"},
+                "host":{"ENV":"TEST_PG_HOST"}
+            },
+            "sql-file" : true
+        }
 
     ```
 1. install all the required packages `npm i`
